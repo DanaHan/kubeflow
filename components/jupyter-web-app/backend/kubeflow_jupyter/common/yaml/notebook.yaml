@@ -15,6 +15,9 @@ spec:
           volumeMounts: []
           env: []
           resources:
+            limits:
+              cpu: "38"
+              memory: "240.0Gi"
             requests:
               cpu: "1"
               memory: "4.0Gi"
