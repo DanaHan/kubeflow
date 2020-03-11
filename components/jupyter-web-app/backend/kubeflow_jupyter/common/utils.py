@@ -270,8 +270,8 @@ def process_resource(rsrc, rsrc_events):
         "age": get_uptime(rsrc["metadata"]["creationTimestamp"]),
         "image": cntr["image"],
         "shortImage": cntr["image"].split("/")[-1],
-        "cpu": cntr["resources"]["limits"]["cpu"],
-        "memory": cntr["resources"]["limits"]["memory"],
+        "cpu": cntr["resources"]["requests"]["cpu"],
+        "memory": cntr["resources"]["requests"]["memory"],
         "volumes": [v["name"] for v in cntr["volumeMounts"]],
         "status": status,
         "reason": reason,
@@ -368,7 +368,8 @@ def set_notebook_cpu(notebook, body, defaults):
         cpu = defaults["cpu"]["value"]
         logger.info("Using default CPU: " + cpu)
 
-    container["resources"]["requests"]["cpu"] = cpu
+    container["resources"]["limits"]["cpu"] = cpu
+    container["resources"]["requests"]["cpu"] = "0.5"
 
 
 def set_notebook_memory(notebook, body, defaults):
@@ -384,8 +385,8 @@ def set_notebook_memory(notebook, body, defaults):
         memory = defaults["memory"]["value"]
         logger.info("Using default Memory: " + memory)
 
-    container["resources"]["requests"]["memory"] = memory
-
+    container["resources"]["limits"]["memory"] = memory
+    container["resources"]["requests"]["memory"] = "1Gi"
 
 def set_notebook_gpus(notebook, body, defaults):
     gpus = None
